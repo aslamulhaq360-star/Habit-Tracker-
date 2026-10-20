@@ -447,4 +447,69 @@ function showToast(msg){
 }
 
 function initNav(){
-  document.
+  document.querySelectorAll('.nav-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
+      document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+      if(btn.dataset.tab==='stats') renderStats();
+      if(btn.dataset.tab==='calendar') renderCalendar();
+      if(btn.dataset.tab==='review') renderReview();
+    });
+  });
+  document.querySelectorAll('.sub-nav-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.sub-nav-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.sub-panel').forEach(p=>p.classList.remove('active'));
+      document.getElementById('sub-'+btn.dataset.sub).classList.add('active');
+    });
+  });
+}
+
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('install-banner').classList.remove('hidden');
+});
+function triggerInstall(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; document.getElementById('install-banner').classList.add('hidden'); });
+  }
+}
+document.getElementById('install-btn').addEventListener('click', triggerInstall);
+document.getElementById('install-banner-btn').addEventListener('click', triggerInstall);
+document.getElementById('install-dismiss').addEventListener('click', ()=> document.getElementById('install-banner').classList.add('hidden'));
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=> navigator.serviceWorker.register('service-worker.js').catch(()=>{}));
+}
+
+function checkReminder(){
+  if(!DATA.settings.reminderEnabled) return;
+  const now = new Date();
+  const [h,m] = DATA.settings.reminderTime.split(':').map(Number);
+  if(now.getHours()===h && now.getMinutes()===m){
+    const entry = DATA.entries[todayStr()];
+    if(!entry || !entry.status){
+      if('Notification' in window && Notification.permission==='granted'){
+        new Notification('ধারা', {body:'আজকের অবস্থা এখনো দেওয়া হয়নি!'});
+      } else { showToast('⏰ আজকের অবস্থা এখনো দেওয়া হয়নি!'); }
+    }
+  }
+}
+
+function renderAll(){ renderDashboard(); renderCalendar(); renderReview(); }
+
+function init(){
+  document.getElementById('habit-title').textContent = DATA.habitName;
+  if(DATA.settings.darkMode) document.body.classList.add('dark');
+  renderAll();
+  renderSettingsFields();
+  initNav();
+  setInterval(()=>{ renderDashboard(); checkReminder(); }, 30000);
+}
+document.addEventListener('DOMContentLoaded', init);
