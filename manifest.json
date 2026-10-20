@@ -1,0 +1,16 @@
+{
+  "name": "ধারা - অভ্যাস ট্র্যাকার",
+  "short_name": "ধারা",
+  "description": "আপনার ব্যক্তিগত ১৮০ দিনের অভ্যাস অগ্রগতি ট্র্যাকার",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f4f6",
+  "theme_color": "#14181f",
+  "icons": [
+    { "src": "icon.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
