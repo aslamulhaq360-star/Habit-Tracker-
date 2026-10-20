@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ধারা - অভ্যাস ট্র্যাকার</title>
+<meta name="theme-color" content="#14181f">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="toast-container"></div>
+
+<header class="app-header">
+  <div class="header-left">
+    <div class="app-icon">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#14181f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M9 12l2 2 4-4"></path>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1 id="habit-title">ধারা</h1>
+      <p>আপনার ব্যক্তিগত অগ্রগতি ট্র্যাকার</p>
+    </div>
+  </div>
+  <button id="install-btn" class="icon-btn" title="অ্যাপ ইনস্টল করুন">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3v12"></path>
+      <path d="M7 10l5 5 5-5"></path>
+      <path d="M5 21h14"></path>
+    </svg>
+  </button>
+</header>
+
+<main id="main-content">
+
+  <section id="tab-home" class="tab-section active">
+    <p class="eyebrow">আপনার যাত্রা</p>
+    <h2 class="page-title">প্রতিদিনের অগ্রগতি</h2>
+    <p class="page-sub" id="header-today">১৫ অক্টো - ১৫ এপ্রি, ২০২৭ · ছয় মাসের নির্দিষ্ট সময়সীমা</p>
+
+    <div class="hero-card">
+      <p class="hero-label">আপনার লক্ষ্য চলছে</p>
+      <div class="hero-main">
+        <div class="hero-days">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#a3e635" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="3"></rect>
+            <path d="M3 9h18"></path><path d="M8 2v4"></path><path d="M16 2v4"></path>
+          </svg>
+          <span><span id="elapsed-days-num">০</span> / <span id="total-days-num">১৮০</span> দিন</span>
+        </div>
+        <div class="ring-wrapper">
+          <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+            <circle class="ring-fg" id="today-ring" cx="60" cy="60" r="52"></circle>
+          </svg>
+          <div class="ring-center">
+            <span id="ring-percent">০%</span>
+          </div>
+        </div>
+      </div>
+      <p class="hero-desc">আপনার সময়সীমার দিন, বাকি সময় এবং দৈনিক ফল এক জায়গায়।</p>
+
+      <div class="hero-progress">
+        <div class="hero-progress-row">
+          <span>সময়ের অগ্রগতি</span>
+          <span id="elapsed-percent-label">০%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-elapsed" style="width:0%"></div>
+        </div>
+        <div class="hero-progress-dates">
+          <span>শুরু <span id="start-date-label">১৫ অক্টো, ২০২৬</span></span>
+          <span>শেষ <span id="end-date-label">১৫ এপ্রি, ২০২৭</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row-3">
+      <div class="stat-col">
+        <p class="stat-big" id="stat-elapsed">০%</p>
+        <p class="stat-label">সময় অতিবাহিত</p>
+        <p class="stat-sub" id="stat-elapsed-days">০ দিন</p>
+      </div>
+      <div class="stat-col">
+        <p class="stat-big" id="stat-success-rate2">০%</p>
+        <p class="stat-label">পূর্ণ সফল দিন</p>
+        <p class="stat-sub" id="stat-success-fraction">০ / ০ অতিবাহিত দিন</p>
+      </div>
+      <div class="stat-col">
+        <p class="stat-big" id="stat-remaining">১০০%</p>
+        <p class="stat-label">সময় অবশিষ্ট</p>
+        <p class="stat-sub" id="stat-remaining-days">১৮০ দিন</p>
+      </div>
+    </div>
+
+    <div class="rate-row">
+      <div class="rate-item">
+        <span class="rate-label">সাফল্যের হার</span>
+        <span class="rate-value success" id="stat-success-rate">০%</span>
+      </div>
+      <div class="rate-item">
+        <span class="rate-label">ব্যর্থতার হার</span>
+        <span class="rate-value fail" id="stat-failure-rate">০%</span>
+      </div>
+    </div>
+    <p class="rate-note">সাফল্যের হার = সফল + আংশিকের অর্ধেক স্কোর। স্কিপ ও অনির্ধারিত দিন হার থেকে বাদ।</p>
+
+    <div class="streak-row">
+      <div class="streak-card">
+        <div class="streak-icon">📈</div>
+        <div>
+          <p class="streak-num" id="stat-current-streak">০ দিন</p>
+          <p class="streak-label">বর্তমান streak</p>
+        </div>
+      </div>
+      <div class="streak-card">
+        <div class="streak-icon">🏆</div>
+        <div>
+          <p class="streak-num" id="stat-max-streak">০ দিন</p>
+          <p class="streak-label">সর্বোচ্চ streak</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="today-entry-card">
+      <div class="today-entry-header">
+        <h3>আজকের এন্ট্রি</h3>
+        <span id="today-date-text">আজ</span>
+      </div>
+      <div class="today-status-badge" id="today-status-display">এখনো চিহ্নিত হয়নি</div>
+      <button class="btn-primary" id="mark-today-btn">আজকের অবস্থা দিন</button>
+      <button class="btn-secondary" id="fill-missed-btn">বাদ পড়া দিন পূরণ করুন</button>
+    </div>
+
+    <div class="milestone-section">
+      <h3>মাইলফলক</h3>
+      <div class="milestone-list" id="milestone-list"></div>
+    </div>
+  </section>
+
+  <section id="tab-calendar" class="tab-section">
+    <h2 class="page-title">ক্যালেন্ডার</h2>
+    <p class="page-sub">প্রতিটি দিনে ট্যাপ করে অবস্থা দেখুন বা যোগ করুন</p>
+    <div class="legend">
+      <span><i class="dot success"></i> সফল</span>
+      <span><i class="dot partial"></i> আংশিক</span>
+      <span><i class="dot fail"></i> ব্যর্থ</span>
+      <span><i class="dot skip"></i> ছুটি</span>
+      <span><i class="dot empty"></i> খালি</span>
+    </div>
+    <div class="month-switcher">
+      <button id="cal-prev">‹</button>
+      <span id="cal-month-label">অক্টোবর ২০২৬</span>
+      <button id="cal-next">›</button>
+    </div>
+    <div class="calendar-grid" id="calendar-grid"></div>
+  </section>
+
+  <section id="tab-stats" class="tab-section">
+    <h2 class="page-title">পরিসংখ্যান</h2>
+    <div class="sub-nav">
+      <button class="sub-nav-btn active" data-sub="daily">দৈনিক</button>
+      <button class="sub-nav-btn" data-sub="weekly">সাপ্তাহিক</button>
+      <button class="sub-nav-btn" data-sub="monthly">মাসিক</button>
+    </div>
+    <div id="sub-daily" class="sub-panel active">
+      <div class="chart-card"><canvas id="chart-doughnut"></canvas></div>
+    </div>
+    <div id="sub-weekly" class="sub-panel">
+      <div class="chart-card"><canvas id="chart-weekly"></canvas></div>
+      <div class="breakdown-list" id="weekly-breakdown"></div>
+    </div>
+    <div id="sub-monthly" class="sub-panel">
+      <div class="chart-card"><canvas id="chart-line"></canvas></div>
+      <div class="breakdown-list" id="monthly-breakdown"></div>
+    </div>
+  </section>
+
+  <section id="tab-review" class="tab-section">
+    <h2 class="page-title">রিভিউ</h2>
+    <select id="review-filter" class="select-field">
+      <option value="all">সব এন্ট্রি</option>
+      <option value="success">সফল</option>
+      <option value="partial">আংশিক</option>
+      <option value="fail">ব্যর্থ</option>
+      <option value="skip">ছুটি</option>
+    </select>
+    <div class="review-list" id="review-list"></div>
+  </section>
+
+  <section id="tab-settings" class="tab-section">
+    <h2 class="page-title">সেটিংস</h2>
+
+    <div class="settings-card">
+      <label>অভ্যাসের নাম</label>
+      <input type="text" id="setting-habit-name" class="input-field">
+
+      <label>শুরুর তারিখ</label>
+      <input type="date" id="setting-start-date" class="input-field">
+
+      <label>মোট দিন</label>
+      <input type="number" id="setting-total-days" class="input-field">
+
+      <label>সাপ্তাহিক লক্ষ্য (দিন)</label>
+      <input type="number" id="setting-weekly-goal" class="input-field">
+
+      <label>মাসিক লক্ষ্য (দিন)</label>
+      <input type="number" id="setting-monthly-goal" class="input-field">
+
+      <button class="btn-primary" id="save-settings-btn">সংরক্ষণ করুন</button>
+    </div>
+
+    <div class="settings-card">
+      <div class="toggle-row">
+        <span>ডার্ক মোড</span>
+        <label class="switch"><input type="checkbox" id="setting-dark-mode"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>রিমাইন্ডার</span>
+        <label class="switch"><input type="checkbox" id="setting-reminder"><span class="slider"></span></label>
+      </div>
+      <input type="time" id="setting-reminder-time" class="input-field">
+    </div>
+
+    <div class="settings-card">
+      <button class="btn-secondary" id="export-btn">ব্যাকআপ এক্সপোর্ট করুন</button>
+      <button class="btn-secondary" id="import-btn">ব্যাকআপ ইমপোর্ট করুন</button>
+      <input type="file" id="import-file" accept=".json" hidden>
+      <button class="btn-danger" id="reset-btn">সব ডেটা রিসেট করুন</button>
+    </div>
+  </section>
+
+</main>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-tab="home">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10l9-7 9 7"></path><path d="M5 9v11h14V9"></path></svg>
+    <span>হোম</span>
+  </button>
+  <button class="nav-btn" data-tab="calendar">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"></rect><path d="M3 9h18"></path></svg>
+    <span>ক্যালেন্ডার</span>
+  </button>
+  <button class="nav-btn" data-tab="stats">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10"></path><path d="M12 20V4"></path><path d="M20 20v-6"></path></svg>
+    <span>পরিসংখ্যান</span>
+  </button>
+  <button class="nav-btn" data-tab="review">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"></path><path d="M8 9h8M8 13h6"></path></svg>
+    <span>রিভিউ</span>
+  </button>
+  <button class="nav-btn" data-tab="settings">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19 12a7 7 0 00-.2-1.6l2-1.6-2-3.4-2.3.9a7 7 0 00-2.8-1.6L13 2h-4l-.7 2.7a7 7 0 00-2.8 1.6l-2.3-.9-2 3.4 2 1.6A7 7 0 005 12c0 .5 0 1.1.2 1.6l-2 1.6 2 3.4 2.3-.9a7 7 0 002.8 1.6L10 22h4l.7-2.7a7 7 0 002.8-1.6l2.3.9 2-3.4-2-1.6c.2-.5.2-1.1.2-1.6z"></path></svg>
+    <span>সেটিংস</span>
+  </button>
+</nav>
+
+<div id="day-modal" class="modal-overlay">
+  <div class="modal-box">
+    <h3 id="modal-date-title">দিনের এন্ট্রি</h3>
+    <label>অবস্থা</label>
+    <select id="modal-status" class="select-field">
+      <option value="success">✅ সফল</option>
+      <option value="partial">💪 আংশিক</option>
+      <option value="fail">😔 ব্যর্থ</option>
+      <option value="skip">😴 ছুটি</option>
+    </select>
+    <div id="modal-reason-wrap" class="hidden">
+      <label>ব্যর্থতার কারণ</label>
+      <select id="modal-reason" class="select-field">
+        <option value="time">সময়ের অভাব</option>
+        <option value="energy">শক্তির অভাব</option>
+        <option value="motivation">অনুপ্রেরণার অভাব</option>
+        <option value="sickness">অসুস্থতা</option>
+        <option value="other">অন্যান্য</option>
+      </select>
+    </div>
+    <label>নোট</label>
+    <textarea id="modal-note" class="input-field" rows="3" placeholder="আজকের অনুভূতি বা কারণ লিখুন..."></textarea>
+    <div class="modal-actions">
+      <button class="btn-danger" id="modal-delete-btn">মুছুন</button>
+      <button class="btn-secondary" id="modal-cancel-btn">বাতিল</button>
+      <button class="btn-primary" id="modal-save-btn">সংরক্ষণ</button>
+    </div>
+  </div>
+</div>
+
+<div id="install-banner" class="install-banner hidden">
+  <span>এই অ্যাপটি হোম স্ক্রিনে ইনস্টল করুন</span>
+  <button id="install-banner-btn">ইনস্টল করুন</button>
+  <button id="install-dismiss">✕</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="app.js"></script>
+</body>
+</html>
